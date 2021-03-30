@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <title>{% block title %}Blogger{% endblock %}</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/welcome.css' %}">
+</head>
+<body>
+<div>
+<!--    <form action="{% url 'logout' %}?next={{ request.path }}"  method="POST" style="display:inline; padding:10px;">-->
+<!--            {% csrf_token %}-->
+<!--            <input type="image" value="LogOut" class="buttonLike" src="/static/css/img/exit.png" height="40px"/>-->
+<!--            </form>-->
+</div>
+<div class="mainTop">
+      {% if request.user.is_authenticated %}
+    <div class="logout" style="float:right;"><form action="{% url 'logout' %}?next={{ request.path }}"  method="POST" style="display:inline; padding:10px;">
+            {% csrf_token %}
+            <input type="image" value="LogOut" class="buttonLike" src="/static/css/img/exit.png" height="40px"/>
+            </form>
+    </div>
+      <a href="{% url 'index' %}">  <img src="/static/css/img/house8.png" alt="house_welcome"></a>
+
+    {% with user.blog_set.all|first as blog %}
+        <a href="{% url 'blog_by_id' blog.id %}">
+            <img src="{{blog.avatar.url}}" alt="My blog" style="height: 90px;
+                            width: 90px;
+                            margin: 8px 0px 0px 60px;
+                            padding: 0;
+                            border-radius: 50%;"/> <div class="base" style="margin-right: 900px;"> Welcome, {{ request.user.username }}!</div></a>
+    <div class="create"><button class="button"><a href="{% url 'create_post_' blog.id %}">Create Post</a></button></div>
+
+
+    {% endwith %}
+
+      {% else %}
+      <a href="{% url 'index' %}">  <img src="/static/css/img/house8.png" alt="house_welcome"></a>
+      <p class="base">Welcome, stranger! Please
+          <button class="button"><a href="{% url 'login' %}?next={{ request.path }}">Log in</a></button>
+          or
+          <span class="base"><button class="button"><a href="{% url 'signup' %}">Sign up</a></button></span>
+      </p>
+      {% endif %}
+  </div>
+    <div class="search-v">
+    <form  action="{% url 'index' %}" style="float: right; margin-right: 50px;">
+        <input  type="search" placeholder="Search" aria-label="Search" name="search" size="110" style="font-size:20px; height:45px; border-radius: 1em; padding-left:15px;
+                                                                                                       border: 2px solid #604020; margin-right:20px;">
+        <button type="submit" class="button" style="border: 3px solid #604020;
+                                                    color: #604020;"> Search </button>
+        </form>
+    </div>
+{% if not request.user.is_authenticated %}
+<div class="mainNotTop">
+
+        <p class="site-info">Here you can read everything about old houses - about their history, architecture, owners and much more! </p>
+            <p class="site-info">You can also create your own posts if you have something to share. </p>
+            <img src="/static/css/img/house.png" alt="house_welcome">
+
+</div>
+{% endif %}
+{% block content %}{% endblock %}
+</body>
+</html>

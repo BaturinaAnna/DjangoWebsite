@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <title>Create post</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/welcome.css' %}">
+</head>
+<body>
+    <div class="mainC">
+        <a href="{% url 'blog_by_id' blog_id %}"><img class="back" src="/static/css/img/sign.png" alt="back"></a>
+        <p class="sign">Create post</p>
+    <form class="form1" method="POST" enctype="multipart/form-data" style="margin-right: 300px;">
+      {% csrf_token %}
+       <table type="text" align="center" class="un create">{{ form }}</table>
+      <input type="submit" class="submit" align="center" value="Upload">
+    </form>
+
+{% if img_obj %}
+  <p class="ask">Succesfully uploaded</p>
+{% endif %}
+    </div>>
+</body>
+</html>

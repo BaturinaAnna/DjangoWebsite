@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <title>Log In</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/welcome.css' %}">
+</head>
+<body>
+    <div class="mainL" style="padding-bottom: 20px;">
+        <a href="{% url 'index' %}"><img class="back" src="/static/css/img/sign.png" alt="back"></a>
+        <p class="sign">Log In</p>
+    <form class="form1" method="POST">
+        {% csrf_token %}
+        <table type="text" align="center" class="un">{{ form }}</table>
+      <input type="submit" class="submit" align="center" value="Log In">
+        {% for message in messages %}
+                    <div>
+                        <a href="#" data-dismiss="alert">×</a>
+                        {{ message }}
+                    </div>
+        {% endfor %}
+    </form>
+        <p class="ask" style="margin-top: 100px;">Don't have an account <a href="{% url 'signup' %}">Sign up</a></p>
+    </div>
+
+</body>
+</html>

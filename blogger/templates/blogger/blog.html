@@ -1,0 +1,190 @@
+{% extends 'blogger/base.html' %}
+{% block title %}{{ blog.title }}{% endblock %}
+{% block content %}
+{% load static %}
+<!--{% if blog.author_id == request.user.id %}-->
+
+<!--<button class="button"><a href="{% url 'create_post_' blog.id %}">Create Post</a></button><br><br><br>-->
+<!--{% endif %}-->
+
+<!--<span class="mainBlogInfo" style="font-size: 30px; padding: 10px; margin-left: 80px; margin-right: 10px;">{{ blog.views}}</span>-->
+<!--<img src="/static/css/img/search.png" width="30px">-->
+<!--<span style="font-size: 30px; padding: 20px;">{{ blog.post_set.count }}</span>-->
+<!--<img src="/static/css/img/mailbox.png" width="30px">-->
+<div class="mainPost row" style="width: 92%;">
+    <div class="columnPhoto"
+         style="float: left;
+               width: 13%;
+               ">
+    <img src="{{blog.avatar.url}}" alt="" width="250" height="250" class="photo"
+                    style="height: 150px;
+                            width: 150px;
+                            margin: 30px 0px 30px 30px;
+                            padding: 0px 0px 0px 0px;
+                            border-radius: 10%;
+                            "/>
+        </div>
+    <div class="column" style="float: right;
+                                width: 25%;
+                                padding-top: 150px;
+                                margin-right: -150px;
+                                padding-bottom: 10px;">
+
+        <span class="mainBlogInfo" style="font-size: 30px; padding: 10px; margin-left: 80px; margin-right: 10px;">{{ blog.views}}</span>
+    <img src="/static/css/img/search.png" width="30px">
+<span style="font-size: 30px; padding: 20px;">{{ blog.post_set.count }}</span><img src="/static/css/img/mailbox.png" width="30px">
+    </div>
+    {% if blog.author_id == request.user.id %}
+    <div class="edit" style="margin-right:-250px;"><form action="{% url 'edit_blog' blog.id %}?name=Edit_blog"  method="POST" style="display:inline; padding:10px;">
+            {% csrf_token %}
+            <input type="image" value="Edit" class="buttonLike" src="/static/css/img/edit.png" height="20px"/>
+            </form>
+            </div>
+    {% endif %}
+
+    <div class="columnMainInfo" style="float: left;
+                                        width: 15%;
+                                        padding-top: 70px; font-size: 20px;">
+        <span><b>Title:</b> {{blog.title}}</span> <br>
+        <span><b>Bio:</b> {{blog.bio}}</span>
+    {% if blog.permission %}
+        <br><span> <b>Email:</b> {{user.email}} </span>
+    {% endif %}
+    </div>
+    <div style="float: left; width: 15%; padding-left:20px; padding-top: 70px; font-size: 20px;
+                                padding-bottom: 10px;">
+        <span><b>Followers:</b>  <a href="{% url 'list' blog.id %}?name=Followers">  {{ blog.author.following.count }} </a> </span>
+    <br>
+        <span><b>Following:</b>  <a href="{% url 'list' blog.id %}?name=Following"> {{ blog.author.follower.count }}  </a> </span>
+    </div>
+
+
+<!--    <div style="float: left; width: 25%; padding-top: 20px; font-size: 20px;-->
+<!--                                padding-bottom: 10px;">-->
+            {% if blog.author.id != request.user.id %}
+        <div style="float:right; margin-right:-220px;">
+        {% if is_followed %}
+        <form action="{% url 'blog_by_id' blog.id %}"  method="POST" style="display: inline;">
+                     {% csrf_token %}
+                    <input type="submit" class="follow" align="center" value="Unfollow" style="color: #60401f;
+                                                                                               border: 3px solid #60401f;
+                                                                                      cursor: pointer;
+                                                                                    background: linear-gradient(to right, #cd9965, #e0bf9f);
+                                                                                    font-family: 'Ubuntu', sans-serif;
+                                                                                    font-size: 20px;"/>
+                </form>
+            {% else %}
+        <form action="{% url 'blog_by_id' blog.id %}"  method="POST" style="display: inline;">
+            {% csrf_token %}
+            <input type="submit" class="follow" align="center" value="Follow" style="color: #60401f;
+                                                                                      border: 3px solid #60401f;
+                                                                                      "/>
+        </form>
+        {% endif %}
+            </div>
+    {% endif %}
+
+
+
+<br/> <br/>
+
+</div>
+
+<ul>
+    {% for post in posts %}
+    <li class="hide">
+        {% if blog.author_id == request.user.id %}
+            <div class="edit" style="margin-right:60px; margin-top:20px;">
+            <form action="{% url 'post_by_id' post.id %}?name=Edit_post"  method="POST" style="display: inline; padding:10px;">
+            {% csrf_token %}
+            <input type="image" value="Edit" class="buttonLike" src="/static/css/img/edit.png" height="20px"/>
+            </form>
+
+            <form action="{% url 'post_by_id' post.id %}?name=Delete_post"  method="POST" style="display: inline; padding:10px;">
+            {% csrf_token %}
+            <input type="image" value="Delete" class="buttonLike" src="/static/css/img/delete.png" height="20px"/>
+            </form>
+            </div>
+            {% endif %}
+        <div class="mainPost" style="width: 94%; margin-left: 50px;">
+        <p><img src="{{post.photo.url}}" alt="" width="300" height="300" class="imgPost"/></p>
+            <div class="postInfo">
+                    <img src="/static/css/img/calendar.png" width="40px">
+                    <span class="postT">Created at:</span> <i>{{ post.created_at }}</i>
+                <br><br>
+
+                <img src="/static/css/img/business-and-finance.png" width="40px">
+                <span class="postT">Post subject:</span> {{ post.subject }}<br><br>
+                <img src="/static/css/img/branding.png" width="40px">
+                <span>
+                    <span class="postT">Story:</span>
+                    <span id="postTextField">{{ post.text }}</span>
+                </span><br><br>
+                <img src="/static/css/img/home-address.png" width="40px">
+                <span class="postT">Address of building:</span> {{ post.address }}
+                </div>
+
+                 <span style="float:right; margin-right:30px; font-weight: 600; font-size: 20px;">
+            <form action="{% url 'post_by_id' post.id %}?name=Like"  method="POST" style="display: inline; padding:10px;">
+            {% csrf_token %}
+            <input type="image" value="Like" class="buttonLike" src="/static/css/img/like.png" height="20px"/>
+            </form>
+                    {{post.likes}}
+                </span>
+                <br><br>
+        </div>
+    </li>
+    <div>
+    {% for comment in comments %}
+            {%if comment.commented_image.id == post.id %}
+            <div class="row comments" style="width: 93%; margin-left: 50px;">
+                <div class="columnImg">
+                    <img src="/static/css/img/message.png" width="40px">
+                </div>
+              <div class="columnAuth">
+                  {{ comment.author }}<br>
+                  At: {{ comment.created_at }}
+              </div>
+              <div class="column">
+                  {{ comment.comment_post }}
+              </div>
+        <div style="float:right; padding-right:15px;">
+
+            {%if comment.author.id != request.user.id %}
+        <form action="{% url 'complaint' comment.id %}"  method="POST" style="display: inline; padding:10px;">
+        {% csrf_token %}
+        <input type="image" value="complaint" class="buttonLike" src="/static/css/img/compl.png" height="20px"/>
+        </form>
+            {%else%}
+            <img class="buttonLike" src="/static/css/img/compl.png" height="20px" style="padding:0px 10px;">
+            {% endif %}
+            {{comment.complaints}}
+         </div>
+        </div>
+            </div>
+        {%endif%}
+
+        {% endfor %}
+    </div>
+
+    <div class="row postComment" style="width: 93%; margin-left: 50px;">
+        <div class="columnImg">
+            <img src="/static/css/img/message.png" width="40px">
+        </div>
+        <form action="{% url 'post_by_id' post.id %}" method="POST" >
+            <div class="columnInput">
+            {% csrf_token %}
+            <textarea name="comment_post" maxlength="4096" rows="10" cols="80" placeholder="Post comment">{{ comment_post }}</textarea>
+            {% if text_error %}
+            <p style="color:red;">{{ text_error }}</p>
+            {% endif %}
+            </div>
+            <div class="columnButton">
+            <input type="image" value="Create comment" class="buttonComment" src="/static/css/img/send.png"/>
+            </div>
+        </form>
+    </div>
+    {% endfor %}
+</ul>
+
+{% endblock %}

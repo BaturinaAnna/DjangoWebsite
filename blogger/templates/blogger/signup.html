@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <title>Sign Up</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/welcome.css' %}">
+</head>
+<body>
+    <div class="mainS" style="height: 700px;">
+        <a href="{% url 'index' %}"><img class="back" src="/static/css/img/sign.png" alt="back"></a>
+    <p class="sign">Sign Up</p>
+
+    <form class="form1" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <table align="center" class="un">{{ form }}</table>
+        <input type="submit" class="submit" align="center" value="Sign Up" style="margin-top: 100px;"/>
+        <p class="ask" style="margin-top: 120px;">Already have an account <a href="{% url 'login' %}">Log in</a></p>
+
+    </form>
+    </div>
+</body>
+</html>

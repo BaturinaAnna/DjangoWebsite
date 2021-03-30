@@ -1,0 +1,39 @@
+{% extends 'blogger/base.html' %}
+{% block content %}
+<h2 >
+    <div style="background-color: #be9063; width: 90%; border-radius: 1.5em; margin-left:5%; padding: 0px 20px 10px 20px;
+        box-shadow: 0px 11px 35px 2px rgba(0, 0, 0, 0.14);">
+        <a href="{% url 'blog_by_id' blog.id %}"><img class="back" src="/static/css/img/sign.png" alt="back"
+                    style="margin:330px 60px;"></a>
+        <br><br>
+        <ul class="av">
+    {% if user_follow %}
+        {% for follow_user in user_follow %}
+            {% with follow_user.blog_set.all|first as follow_blog %}
+        <li class="hide mainAvatar">
+    <table style="margin-left: 1%; border-radius: 20px; background-color: #f2e6d9; margin-bottom:20px; padding-left:10px;">
+    <td><img src="{{follow_blog.avatar.url}}" alt="" class="photo"
+                style="height: 50px;
+                            width: 50px;
+                            margin:0;
+                            padding: 0;
+                            border-radius: 50%;
+                            "/></td>
+            <td style="width: 600px;"><a href="{% url 'blog_by_id' follow_blog.id %}" class="blogName">{{ follow_blog.title }}</a></td>
+            <td style="width: 300px"> Posts: {{follow_blog.post_set.count}} </td>
+                <td style="width: 300px"> Views: {{follow_blog.views}} </td>
+                <td style="width: 300px"> Followers: {{follow_blog.author.following.count}} </td>
+                <td style="width: 300px"> Following: {{follow_blog.author.follower.count}} </td>
+            {%endwith%}
+    </table>
+            </li>
+        {% endfor %}
+            {%else%}
+            <img src="/static/css/img/cat.png" alt="empty" width="500px" style="margin-left: 35%;">
+            {%endif%}
+        </ul>
+
+    </div>
+</h2>
+{% endblock %}
+
