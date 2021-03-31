@@ -48,7 +48,7 @@
         <span><b>Title:</b> {{blog.title}}</span> <br>
         <span><b>Bio:</b> {{blog.bio}}</span>
     {% if blog.permission %}
-        <br><span> <b>Email:</b> {{user.email}} </span>
+        <br><span> <b>Email:</b> {{blog.author.email}} </span>
     {% endif %}
     </div>
     <div style="float: left; width: 15%; padding-left:20px; padding-top: 70px; font-size: 20px;

@@ -46,7 +46,7 @@ class PostForm(forms.ModelForm):
 
 class BlogEditForm(forms.ModelForm):
     title = forms.CharField(max_length=50)
-    bio = forms.CharField(max_length=1500, widget=forms.Textarea)
+    bio = forms.CharField(max_length=300, widget=forms.Textarea)
 
     class Meta:
         model = Blog
